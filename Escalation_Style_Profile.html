@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escalation Style Profile | Managing Escalations Like a Leader</title><style>
+:root{
+  --navy:#243748; --ink:#1B1A23; --blue:#2683C6; --teal:#3394BA; --aqua:#57B6C0; --sage:#76BDA7; --coral:#E4572E; --gold:#F2B134;
+  --bg:#FFFFFF; --surface:#EEF4F8; --surface2:#E3F1F6; --text:#1B1A23; --muted:#5B6775; --line:#D5DEE6;
+  --side:#243748; --sideText:#FFFFFF; --sideMuted:#B8C7D3; --good:#2F8A6E; --goodBg:#E6F3EE; --badBg:#FCE9E3; --warnBg:#FDF3DD;
+  --accentText:#1F6F8F;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#141C24; --surface:#1E2A36; --surface2:#22323F; --text:#E8EEF3; --muted:#A9B6C2; --line:#33475A;
+    --side:#0F161D; --sideText:#E8EEF3; --sideMuted:#8FA3B4; --good:#7FD1B3; --goodBg:#183329; --badBg:#3A2019; --warnBg:#3A3018;
+    --accentText:#7CCBE0;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Calibri,"Segoe UI",Carlito,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.55}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.app{display:grid;grid-template-columns:290px 1fr;min-height:100vh}
+aside{background:var(--side);color:var(--sideText);padding:28px 20px;position:sticky;top:0;height:100vh;overflow:auto}
+aside .course{font-size:14px;color:var(--sideMuted);margin:0 0 4px}
+aside h1{font-size:22px;line-height:1.2;margin:0 0 18px}
+.prog{height:8px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden;margin-bottom:6px}
+.prog i{display:block;height:100%;width:0;background:var(--aqua);transition:width .4s}
+.progLabel{font-size:13px;color:var(--sideMuted);margin-bottom:20px}
+nav ol{list-style:none;padding:0;margin:0}
+nav li button{width:100%;text-align:left;background:none;border:0;color:var(--sideText);padding:10px 10px;border-radius:8px;display:flex;gap:12px;align-items:flex-start}
+nav li button:hover{background:rgba(255,255,255,.07)}
+nav li button[aria-current="true"]{background:rgba(87,182,192,.22)}
+nav .dot{flex:0 0 26px;height:26px;border-radius:50%;border:2px solid var(--sideMuted);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--sideMuted)}
+nav .done .dot{background:var(--sage);border-color:var(--sage);color:#123}
+nav .t{font-size:15px;line-height:1.3}
+nav .m{display:block;font-size:12px;color:var(--sideMuted)}
+.menuBtn{display:none}
+main{padding:44px clamp(20px,5vw,72px) 80px;max-width:1040px}
+.mod{display:none}
+.mod.active{display:block}
+.kicker{color:var(--accentText);font-weight:700;font-size:15px;margin:0 0 6px}
+h2{font-size:clamp(30px,4vw,42px);line-height:1.12;margin:0 0 10px;color:var(--text)}
+h3{font-size:23px;margin:36px 0 10px}
+h4{font-size:18px;margin:0 0 6px}
+p.lead{font-size:19px;color:var(--muted);max-width:68ch;margin:0 0 26px}
+p{max-width:72ch}
+.panel{background:var(--surface);border-radius:14px;padding:22px 24px;margin:16px 0}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.grid > .panel{margin:0}
+.btn{background:var(--teal);color:#fff;border:0;border-radius:999px;padding:11px 24px;font-weight:700}
+.btn:hover{background:var(--blue)}
+.btn.ghost{background:transparent;color:var(--accentText);border:2px solid var(--teal)}
+.btn.next{background:var(--navy)}
+@media (prefers-color-scheme: dark){.btn.next{background:var(--teal)}}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:44px;padding-top:22px;border-top:1px solid var(--line);flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.tag{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--surface2);color:var(--accentText)}
+
+/* Hero: incoming escalation email */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;align-items:center;margin-bottom:34px}
+.mail{background:var(--bg);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 40px rgba(36,55,72,.18);overflow:hidden;transform:rotate(-1.5deg)}
+.mail .bar{background:var(--navy);color:#fff;padding:10px 16px;font-size:14px;display:flex;justify-content:space-between}
+.mail .body{padding:18px 20px}
+.mail .from{font-size:14px;color:var(--muted)}
+.mail .subj{font-weight:700;font-size:18px;margin:6px 0 10px}
+.mail .flag{color:var(--coral);font-weight:700}
+.unread{width:10px;height:10px;border-radius:50%;background:var(--coral);display:inline-block;margin-right:8px;animation:pulse 1.6s ease-in-out 3}
+@keyframes pulse{50%{transform:scale(1.7);opacity:.5}}
+@media (prefers-reduced-motion: reduce){.unread{animation:none}.prog i{transition:none}}
+.path{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:12px 0}
+.path div{border-left:0;background:var(--surface);border-radius:12px;padding:16px}
+.path b{display:block;font-size:24px;color:var(--accentText)}
+
+/* Quiz-style options */
+.q{margin:0 0 22px}
+.q .stem{font-weight:700;margin-bottom:10px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:11px 14px;color:var(--text)}
+.opt:hover{border-color:var(--aqua)}
+.opt[aria-pressed="true"]{border-color:var(--teal);background:var(--surface2)}
+.opt.correct{border-color:var(--good);background:var(--goodBg)}
+.opt.wrong{border-color:var(--coral);background:var(--badBg)}
+.fb{margin-top:10px;padding:12px 14px;border-radius:10px;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--goodBg)}
+.fb.bad{background:var(--badBg)}
+.fb.info{background:var(--warnBg)}
+.counter{font-size:14px;color:var(--muted);margin-bottom:8px}
+
+/* Style results */
+.bars{display:grid;gap:10px;margin:14px 0}
+.barRow{display:grid;grid-template-columns:110px 1fr 30px;gap:10px;align-items:center;font-weight:700}
+.barTrack{height:16px;background:var(--surface2);border-radius:8px;overflow:hidden}
+.barTrack i{display:block;height:100%;border-radius:8px}
+.styleCard{border-radius:14px;padding:22px;color:#fff}
+.styleCard h4{font-size:26px;margin:0}
+.styleCard p{margin:6px 0}
+
+/* Levels */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{border:2px solid var(--line);background:var(--bg);color:var(--text);border-radius:999px;padding:8px 16px;font-weight:700}
+.tabs button[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+@media (prefers-color-scheme: dark){.tabs button[aria-selected="true"]{background:var(--teal);border-color:var(--teal)}}
+.lvl{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end;margin:10px 0 6px}
+.lvl div{border-radius:10px 10px 4px 4px;color:#fff;padding:10px 12px;font-weight:700;font-size:15px}
+
+/* Iceberg reveal */
+.ice{position:relative;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,var(--bg) 0 34%,#1F5F7A 34% 100%)}
+@media (prefers-color-scheme: dark){.ice{background:linear-gradient(180deg,var(--surface) 0 34%,#123848 34% 100%)}}
+.ice .tip{padding:20px 24px;min-height:120px}
+.ice .under{padding:20px 24px;color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{padding:8px 14px;border-radius:999px;font-weight:700;font-size:15px}
+.ice .tip .chip{background:var(--surface2);color:var(--text)}
+.ice .under .chip{background:rgba(255,255,255,.14);color:#fff;border:1px dashed rgba(255,255,255,.5)}
+.ice .under .chip.hidden{color:transparent;user-select:none}
+
+/* Sorter */
+.sortRow{display:grid;grid-template-columns:1fr 150px 28px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+select,input[type=text],textarea{font:inherit;background:var(--bg);color:var(--text);border:2px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+textarea{min-height:76px;resize:vertical}
+label{font-weight:700;display:block;margin:12px 0 4px}
+
+/* STEER */
+.steer{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.steer button{border:0;border-radius:14px;padding:16px 8px;color:#fff;font-weight:700}
+.steer button b{display:block;font-size:40px;line-height:1}
+.steer button[aria-pressed="true"]{outline:4px solid var(--gold);outline-offset:2px}
+.steerDetail{min-height:150px}
+
+/* Branching */
+.lobs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.lobs button{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:14px;color:var(--text);text-align:left;font-weight:700}
+.lobs button:hover{border-color:var(--teal)}
+.scene{border-radius:14px;padding:22px 24px;background:var(--navy);color:#fff}
+@media (prefers-color-scheme: dark){.scene{background:#1A3346}}
+.scene .clock{font-size:14px;color:#B8C7D3;margin-bottom:4px}
+.steps{display:flex;gap:6px;margin:12px 0}
+.steps i{height:6px;flex:1;border-radius:3px;background:var(--line)}
+.steps i.on{background:var(--teal)}
+
+/* Region flip cards */
+.flip{background:none;border:0;padding:0;perspective:1000px;height:250px;text-align:left;color:inherit}
+.flip .inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip[aria-pressed="true"] .inner{transform:rotateY(180deg)}
+.flip .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:18px;display:flex;flex-direction:column}
+.flip .front{background:var(--surface)}
+.flip .back{color:#fff;transform:rotateY(180deg)}
+.flip .code{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;margin-bottom:10px}
+.flip .hint{margin-top:auto;font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){.flip .inner{transition:none}}
+.tz{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center}
+.tz div{background:var(--surface);border-radius:12px;padding:14px}
+.tz b{display:block;font-size:26px}
+.tz .night{background:#1D2B38;color:#E8EEF3}
+
+/* Builder */
+.preview{background:var(--bg);border:2px dashed var(--teal);border-radius:12px;padding:18px;font-size:18px;white-space:pre-wrap}
+.swap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  aside{position:relative;height:auto;padding:16px 18px}
+  aside nav{display:none}
+  aside.open nav{display:block}
+  .menuBtn{display:inline-block;background:transparent;color:#fff;border:2px solid var(--aqua);border-radius:999px;padding:6px 14px;margin-bottom:10px}
+  .hero,.g2,.g3,.g4,.path,.lobs,.swap{grid-template-columns:1fr}
+  .steer,.lvl,.tz{grid-template-columns:repeat(2,1fr)}
+  .mail{transform:none}
+  .sortRow{grid-template-columns:1fr}
+}
+
+.grid > .panel{margin:0}
+.scale{display:grid;grid-template-columns:1fr repeat(5,44px);gap:6px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.scale .lab{font-size:16px}
+.scale button{height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg);color:var(--text);font-weight:700}
+.scale button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.scaleHead{display:grid;grid-template-columns:1fr repeat(5,44px);gap:6px;font-size:12px;color:var(--muted);text-align:center}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.three .panel{margin:0}
+.three b.big{display:block;font-size:20px;margin-bottom:4px}
+.newfact{border-left:0;background:var(--warnBg);border-radius:10px;padding:12px 14px;margin:12px 0;display:none}
+.newfact.show{display:block}
+.vague{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:16px 18px;font-style:italic;font-size:18px}
+.checks{display:grid;gap:8px;margin:12px 0}
+.checks label{font-weight:400;display:flex;gap:10px;align-items:flex-start;margin:0;background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.checks input{margin-top:5px;width:18px;height:18px;flex:0 0 18px}
+.checks label.correct{border-color:var(--good);background:var(--goodBg)}
+.checks label.wrong{border-color:var(--coral);background:var(--badBg)}
+.checks label.missed{border-style:dashed;border-color:var(--good)}
+.why{display:grid;gap:8px}
+.why .w{display:none;background:var(--surface);border-radius:10px;padding:12px 14px}
+.why .w.show{display:block}
+.why .w b{color:var(--accentText)}
+.why .w.root{background:var(--goodBg)}
+.logt{width:100%;border-collapse:collapse;font-size:15px;margin:10px 0}
+.logt th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px}
+.logt td{padding:8px 10px;border-bottom:1px solid var(--line)}
+.logt tr:nth-child(even) td{background:var(--surface)}
+.toolkit .tool{background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:20px 22px;margin:16px 0;break-inside:avoid}
+.toolkit .tool h4{font-size:20px;color:var(--accentText)}
+.toolkit ul{margin:6px 0 0;padding-left:20px}
+.toolkit li{margin:3px 0}
+.tool table{width:100%;border-collapse:collapse;font-size:15px}
+.tool td{border:1px solid var(--line);padding:8px 10px;vertical-align:top}
+.tool td:first-child{font-weight:700;width:34%}
+.compare{display:grid;grid-template-columns:1fr 70px 70px;gap:6px;align-items:center;font-size:15px;padding:6px 0;border-bottom:1px solid var(--line)}
+.compare b{text-align:center}
+.pass{font-size:22px;font-weight:700}
+@media print{
+  aside,.foot,.noprint,.btn{display:none!important}
+  .app{display:block}
+  body{background:#fff;color:#000}
+  .mod{display:none!important}
+  body.p-plan #mPlan, body.p-tools #mTools{display:block!important}
+  body.p-plan #mPlan .noprintsec{display:none!important}
+  textarea,input{border:1px solid #999}
+  .toolkit .tool{border:1px solid #999}
+}
+@media (max-width:900px){.three{grid-template-columns:1fr}.scale,.scaleHead{grid-template-columns:1fr repeat(5,36px)}}
+
+.wrap{max-width:900px;margin:0 auto;padding:44px clamp(18px,5vw,48px) 70px}
+.topbar{background:var(--side);color:#fff;padding:14px clamp(18px,5vw,48px)}
+.topbar span{color:var(--sideMuted);font-size:14px}
+.allStyles .panel h4{margin-bottom:4px}
+@media print{ .topbar,.noprint,.btn,#intro,#profileWrap{display:none!important} body{background:#fff;color:#000} .wrap{padding:0} }
+</style></head>
+<body><div class="topbar"><b>HRC Learning &amp; Development</b> <span>| Senior Leadership Programme | Managing Escalations Like a Leader</span></div>
+<div class="wrap">
+<div id="intro">
+  <p class="kicker">Self-assessment | about 6 minutes</p>
+  <h2>Escalation Style Profile</h2>
+  <p class="lead">Twelve situations. Every option is something a good leader might reasonably do, so there are no right or wrong answers. Pick what you would most likely do <b>first</b>, not what you think you should do.</p>
+  <div class="panel small"><b>Before you start:</b> answer quickly, based on how you usually behave under pressure, not how you'd like to behave. Your answers stay in this browser window and aren't recorded or sent anywhere.</div>
+</div>
+<div id="profileWrap" class="panel"></div>
+<div id="profileResult" hidden></div>
+<div id="allStyles" class="allStyles" hidden>
+  <h3>All four styles</h3>
+  <p class="muted small">Most leaders use all four. Your profile shows where you tend to go first.</p>
+  <div class="grid g2" id="allGrid"></div>
+  <p class="noprint" style="margin-top:24px"><button class="btn" id="printRes">Print or save my result</button></p>
+</div>
+</div><script>const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const STYLES = {
+  R: { name: "Rescuer", tag: "Jumps in and fixes", color: "var(--coral)",
+    strength: "Speed and hands-on credibility. Your team sees you in the trenches, and things move fast when you're involved.",
+    watch: "Your team can come to depend on you, and you may fix symptoms before the cause is understood. At senior level, taking over can undermine the Managers who should be leading.",
+    leads: "Execute", stretch: "Stabilise and Review",
+    flex: "Before you jump in, ask yourself: \"Who on my team should own this, and what do they need from me?\" Send the holding statement first, then fix." },
+  P: { name: "Protector", tag: "Shields the team", color: "var(--blue)",
+    strength: "Your team feels safe and works without panic. People trust you, and they're more likely to tell you the truth.",
+    watch: "The client can feel unheard while you defend the team. The team may also never see the real impact on the client, so the lesson doesn't land.",
+    leads: "Take ownership", stretch: "Engage with the client",
+    flex: "Pass on the client's reality without passing on the panic. Share the impact with the team, and own the outcome with the client." },
+  N: { name: "Negotiator", tag: "Manages the relationship", color: "var(--sage)",
+    strength: "You calm clients, reset expectations and buy the time needed to fix things. Relationships often come out of an escalation stronger.",
+    watch: "You may promise more than the team can deliver, and the root cause can get less attention once the client is calm.",
+    leads: "Stabilise and communicate", stretch: "Review and prevent",
+    flex: "Before any commitment, check with the person who will deliver it. Don't treat the escalation as closed until the preventive action is closed too." },
+  A: { name: "Analyst", tag: "Finds the root cause", color: "var(--teal)",
+    strength: "Your fixes are accurate and your RCAs are credible. Clients who value data trust you, and problems stay fixed.",
+    watch: "While you gather facts, the client may experience silence. People can read you as slow or detached when they're upset.",
+    leads: "Review and prevent", stretch: "Stabilise",
+    flex: "Respond before you analyse. A holding statement buys you the time to investigate properly without the client feeling ignored." }
+};
+const PROFILE = [
+  ["A client escalation lands at 7 pm your time. Your first instinct is to...",
+    [["A", "Pull the data and timeline so you know what actually happened before you respond"], ["R", "Get on a call with the team lead and start working on the fix tonight"],
+     ["N", "Call the client to understand what matters most to them and agree a timeline"], ["P", "Tell the team you've got their back and take over client contact yourself"]]],
+  ["Your Manager is handling an L2 escalation, but the client is getting impatient. You...",
+    [["P", "Let the Manager keep leading, and keep pressure from above off them"], ["N", "Join the next client call to reset expectations together"],
+     ["R", "Step in and take over so it gets resolved faster"], ["A", "Review the Manager's plan and root-cause logic before the next update"]]],
+  ["In a tense client call, your attention goes mostly to...",
+    [["N", "The client's mood, and what will rebuild their confidence"], ["A", "Getting the facts right and not saying anything inaccurate"],
+     ["P", "Making sure your team isn't unfairly blamed"], ["R", "What can be done right now to fix it"]]],
+  ["Once the escalation is over, you put most energy into...",
+    [["R", "Making sure the issue and any backlog are fully cleared"], ["A", "The root cause analysis and preventive actions"],
+     ["N", "A follow-up with the client to repair the relationship"], ["P", "Checking in on the people who carried the pressure"]]],
+  ["A colleague would most likely describe you in an escalation as...",
+    [["A", "\"Thorough. Gets to the bottom of it.\""], ["P", "\"Loyal. Stands up for the team.\""],
+     ["R", "\"Hands-on. In the trenches with us.\""], ["N", "\"Calm. Great with clients.\""]]],
+  ["You find out a team kept a problem quiet for days. Your first reaction is to...",
+    [["P", "Understand what pressure made them feel they couldn't say anything"], ["R", "Get it fixed before anything else"],
+     ["A", "Work out exactly when and where the process broke down"], ["N", "Think about how to explain the delay to the client"]]],
+  ["Under real time pressure, you're most likely to...",
+    [["N", "Negotiate more time with the client"], ["R", "Do it yourself rather than delegate"],
+     ["A", "Slow down to make sure you have the right answer"], ["P", "Take on extra work yourself so the team isn't overloaded"]]],
+  ["What frustrates you most during an escalation is...",
+    [["R", "Discussions that delay action"], ["N", "A client who feels nobody is listening"],
+     ["P", "People looking for someone to blame"], ["A", "Decisions made on guesswork"]]],
+  ["A client asks for an exact fix date, and you're not sure yet. You're most likely to...",
+    [["N", "Offer a date with enough buffer to keep them confident"], ["A", "Say you'll confirm a date once the analysis is complete"],
+     ["P", "Check with the team first so they aren't put under unrealistic pressure"], ["R", "Commit to the earliest date and drive the team to hit it"]]],
+  ["Your Director asks for an update on a live escalation. You naturally lead with...",
+    [["A", "What you've found about the cause"], ["P", "How the team is coping and what support they need"],
+     ["R", "What's being done right now and how fast it's moving"], ["N", "How the client is feeling and where the relationship stands"]]],
+  ["A peer team's mistake has caused your escalation. Your instinct is to...",
+    [["P", "Make sure your own team isn't blamed for it"], ["N", "Keep the client reassured while the teams sort it out"],
+     ["A", "Map out exactly where the handoff between the teams broke"], ["R", "Lend some of your own people to help fix it"]]],
+  ["The escalation you'd find hardest to handle is one where...",
+    [["R", "There's nothing you can personally do to fix it"], ["P", "Your team is being criticised unfairly"],
+     ["N", "The client won't engage or talk to you"], ["A", "The facts keep changing and nobody knows the cause"]]]
+];
+
+const answers = new Array(PROFILE.length).fill(null);
+let pIdx = 0;
+function renderProfile() {
+  const [stem, opts] = PROFILE[pIdx];
+  $("#profileWrap").innerHTML = `<div class="counter">Situation ${pIdx + 1} of ${PROFILE.length}</div>
+    <div class="steps">${PROFILE.map((_, i) => `<i class="${i <= pIdx ? "on" : ""}"></i>`).join("")}</div>
+    <div class="q"><div class="stem" id="pStem">${stem}</div><div class="opts" role="group" aria-labelledby="pStem">
+    ${opts.map(([k, t]) => `<button class="opt" data-k="${k}" aria-pressed="${answers[pIdx] === k}">${t}</button>`).join("")}</div></div>
+    <div style="display:flex;gap:10px;justify-content:space-between">
+      <button class="btn ghost" id="pBack" ${pIdx === 0 ? "disabled" : ""}>Previous</button>
+      <button class="btn" id="pNext" ${answers[pIdx] ? "" : "disabled"}>${pIdx === PROFILE.length - 1 ? "See my profile" : "Next"}</button></div>`;
+  $$("#profileWrap .opt").forEach(b => b.addEventListener("click", () => {
+    answers[pIdx] = b.dataset.k;
+    $$("#profileWrap .opt").forEach(x => x.setAttribute("aria-pressed", x === b)); $("#pNext").disabled = false;
+  }));
+  $("#pBack").addEventListener("click", () => { pIdx--; renderProfile(); });
+  $("#pNext").addEventListener("click", () => { if (pIdx < PROFILE.length - 1) { pIdx++; renderProfile(); } else showProfile(); });
+}
+function showProfile() {
+  const c = { R: 0, P: 0, N: 0, A: 0 }; answers.forEach(a => c[a]++);
+  const sorted = Object.keys(c).sort((a, b) => c[b] - c[a]);
+  const top = sorted[0], second = sorted[1], blend = c[top] === c[second], s = STYLES[top];
+  $("#profileWrap").hidden = true; $("#intro").hidden = true;
+  const r = $("#profileResult"); r.hidden = false;
+  r.innerHTML = `<p class="kicker">Escalation Style Profile | your result</p>
+    <div class="styleCard" style="background:${s.color}">
+      <p style="margin:0;opacity:.9">Your default style${blend ? " (a blend)" : ""}</p>
+      <h4>${blend ? s.name + " and " + STYLES[second].name : s.name}</h4><p>${s.tag}${blend ? " | " + STYLES[second].tag : ""}</p></div>
+    <div class="bars">${["R", "P", "N", "A"].map(k => `<div class="barRow"><span>${STYLES[k].name}</span><div class="barTrack"><i style="width:${c[k] / PROFILE.length * 100}%;background:${STYLES[k].color}"></i></div><span>${c[k]}</span></div>`).join("")}</div>
+    <div class="grid g2">
+      <div class="panel"><h4>Your strength</h4><p class="small" style="margin:0">${s.strength}</p></div>
+      <div class="panel"><h4>Watch out for</h4><p class="small" style="margin:0">${s.watch}</p></div>
+      <div class="panel"><h4>In STEER terms</h4><p class="small" style="margin:0">You naturally lead with <b>${s.leads}</b>. Your stretch is <b>${s.stretch}</b>.</p></div>
+      <div class="panel"><h4>Your flex move</h4><p class="small" style="margin:0">${s.flex}</p></div>
+    </div>
+    ${blend ? `<p class="small muted">You scored equally on ${s.name} and ${STYLES[second].name}. Read both descriptions below and notice which one shows up when the pressure is highest.</p>` : ""}
+    <p class="small muted">This profile shows where you tend to go first under pressure, not who you are. Every style is valuable. Strong leaders know their default and add what's missing. <b>Note your result and bring it to your session.</b></p>
+    <p class="small muted"><b>STEER:</b> Stabilise, Take ownership, Engage, Execute and communicate, Review and prevent.</p>
+    <button class="btn ghost noprint" id="pRetake">Retake the profile</button>`;
+  $("#allGrid").innerHTML = ["R", "P", "N", "A"].map(k => { const x = STYLES[k]; return `<div class="panel" style="border-top:6px solid ${x.color}"><h4>${x.name}</h4><p class="small muted" style="margin:0 0 6px">${x.tag}</p><p class="small" style="margin:0 0 6px"><b>Strength:</b> ${x.strength}</p><p class="small" style="margin:0 0 6px"><b>Watch out for:</b> ${x.watch}</p><p class="small" style="margin:0"><b>Flex move:</b> ${x.flex}</p></div>`; }).join("");
+  $("#allStyles").hidden = false;
+  window.scrollTo({ top: 0 });
+  $("#pRetake").addEventListener("click", () => { answers.fill(null); pIdx = 0; r.hidden = true; $("#allStyles").hidden = true; $("#intro").hidden = false; $("#profileWrap").hidden = false; renderProfile(); });
+}
+$("#printRes").addEventListener("click", () => window.print());
+renderProfile();
+</script></body></html>
